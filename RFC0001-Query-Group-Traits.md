@@ -164,7 +164,7 @@ storage, plus methods to convert from a query key up to the group key:
 
 ```rust
 pub trait Query<DB: Database>: Debug + Default + Sized + 'static {
-    /// Type that you you give as a parameter -- for queries with zero
+    /// Type that you give as a parameter -- for queries with zero
     /// or more than one input, this will be a tuple.
     type Key: Clone + Debug + Hash + Eq;
 
@@ -200,7 +200,7 @@ pub trait Query<DB: Database>: Debug + Default + Sized + 'static {
 Putting all the previous plumbing traits together, this means
 that given:
 
-- a database `DB` that implements `HasGroupStorage<G>`;
+- a database `DB` that implements `HasQueryStorage<G>`;
 - a group struct `G` that implements `QueryGroup<DB>`; and,
 - and a query struct `Q` that implements `Query<DB, Group = G>`
 
@@ -208,7 +208,7 @@ we can (generically) get the storage for the individual query
 `Q` out from the database `db` via a two-step process:
 
 ```rust
-let group_storage = HasGroupStorage::group_storage(db);
+let group_storage = HasQueryStorage::group_storage(db);
 let query_storage = Query::query_storage(group_storage);
 ```
 
@@ -217,7 +217,7 @@ up to the "database key" in a two-step process:
 
 ```rust
 let group_key = Query::group_key(key);
-let db_key = HasGroupStorage::database_key(group_key);
+let db_key = HasQueryStorage::database_key(group_key);
 ```
 
 ## Lowering query groups
